@@ -24,7 +24,6 @@ static size_t writefunciton(void* buffer, size_t size, size_t nmemb, void* param
 
     finallink = finallink += link;
 
-    std::cout << finallink.c_str() << std::endl;
     std::string result;
     CURL* curl;
     CURLcode res;
@@ -34,7 +33,6 @@ static size_t writefunciton(void* buffer, size_t size, size_t nmemb, void* param
     std::string header_string;
     char* url;
     double time;
-    std::string lol = response.c_str();
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL, finallink.c_str());
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "1337");
@@ -44,8 +42,12 @@ static size_t writefunciton(void* buffer, size_t size, size_t nmemb, void* param
         curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
 
         res = curl_easy_perform(curl);
-        if (response == "Error") std::cout << "Error. (" << time << " ms)" << std::endl; system("pause"); return -1;
-        std::cout << "Result: " << lol << " (" << time << " ms)" << std::endl << "Launching browser.." << std::endl;
+        if (!response._Equal("Error")) {
+            std::cout << std::endl << "Result: (" << time << " ms) " << std::endl << response << std::endl; //<< "Launching browser.." << std::endl;
+        }
+        else {
+            std::cout << "Error. (" << time << " ms)" << std::endl; system("pause"); return -1;
+        }
         //Fuck browsers in c++ :(
         if (CURLE_OK != res) {
             std::cerr << "CURL error: " << res << '\n';
